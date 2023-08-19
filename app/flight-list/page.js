@@ -89,16 +89,20 @@ const FlightList = () => {
         </div>
         <div  className={`grid ${isOneWay ? 'grid-cols-1' : 'grid-cols-2'}`}>
         {/* Departure */}
-          <div className="border rounded-md mb-10 border-gray-200 mr-2">
-            <div className="text-gray-50 rounded-b-none rounded-md bg-slate-400 text-center p-2 text-lg font-semibold">
-              <p>Departure</p>
-              <p className="text-xs">
-                1 October 2023, Friday
-              </p> 
-            </div>
+          <div className="text-gray-50 rounded-b-none rounded-md bg-slate-400 text-center p-1 font-semibold">
+            <p>Departure</p>
+            <p className="text-xs">
+              1 October 2023, Friday
+            </p> 
+          </div>
+          {/* Departure List */}
+          <div className="border rounded-t-none rounded-md mb-10 hover:shadow-md border-gray-200 mr-2 w-full">
             <div className="grid grid-cols-2 md:grid-cols-4 ">
               <div className="pl-5 pt-3">
                 <p>Airline</p>
+                <div className="flex pt-3">
+                  🛫 Anadolujet
+                </div>
                 <div className="flex pt-3">
                   <div className="text-xs mr-1">ADA</div>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
@@ -180,6 +184,7 @@ const FlightList = () => {
               </div>
           </div>
           </div>
+          
           {/* Return */}
         {!isOneWay &&  <div className="border rounded-md mb-10 border-gray-200">
               <div className="text-gray-50 rounded-b-none rounded-md bg-slate-400 text-center p-2 text-lg font-semibold">
