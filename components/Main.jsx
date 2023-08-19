@@ -3,17 +3,29 @@ import React, {useState, useEffect, useRef} from 'react';
 import { airportsData } from '@/public/airportData';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
+import { useFlightSearchContext } from '../context/FlightContext';
+import Link from 'next/link';
 
-function FlightSearchForm() {
-    const [departureAirport, setDepartureAirport] = useState('');
-    const [arrivalAirport, setArrivalAirport] = useState('');
+function FlightSearchForm() { 
+
+    const {
+        departureAirport,
+        setDepartureAirport,
+        arrivalAirport,
+        setArrivalAirport,
+        departureDate,
+        setDepartureDate,
+        arrivalDate,
+        setArrivalDate,
+        oneWay,
+        setOneWay,
+    } = useFlightSearchContext();
+    
     const [filteredDepartureAirports, setFilteredDepartureAirports] = useState([]);
     const [filteredArrivalAirports, setFilteredArrivalAirports] = useState([]);
     const departureInputRef = useRef(null);
     const arrivalInputRef = useRef(null);
-    const [departureDate, setDepartureDate] = useState(null);
-    const [arrivalDate, setArrivalDate] = useState(null);
-    const [oneWay, setOneWay] = useState(false);
+    
 
     useEffect(() => {
         function handleOutsideClick(event) {
@@ -82,7 +94,7 @@ function FlightSearchForm() {
     };
 
     return (
-        <div className="p-8 bg-white rounded shadow-md relative">
+        <div className="p-8 bg-white rounded shadow-md relative ">
             <h2 className="text-xl text-gray-700 font-semibold mb-4">Flight Search</h2>
             <div className="grid md:grid-cols-2 gap-4 mt-8">
                 <div className="z-10 relative" ref = {departureInputRef} >
@@ -164,7 +176,11 @@ function FlightSearchForm() {
                     onChange={handleOneWayChange}
                 />
             </div>
-            <button className="bg-cyan-400 text-white px-4 py-2 rounded mt-4 hover:bg-cyan-500">Search Flights</button>
+            <Link 
+                href="/flightlist"
+            >
+                <button className="bg-cyan-400 text-white px-4 py-2 rounded mt-4 hover:bg-cyan-500">Search Flights</button>
+            </Link>
         </div>
     );
 }
