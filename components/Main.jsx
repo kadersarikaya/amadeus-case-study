@@ -12,7 +12,8 @@ function FlightSearchForm() {
     const departureInputRef = useRef(null);
     const arrivalInputRef = useRef(null);
     const [departureDate, setDepartureDate] = useState(null);
-    const [returnDate, setReturnDate] = useState(null);
+    const [arrivalDate, setArrivalDate] = useState(null);
+    const [oneWay, setOneWay] = useState(false);
 
     useEffect(() => {
         function handleOutsideClick(event) {
@@ -43,7 +44,8 @@ function FlightSearchForm() {
 
         // Filter matching departure airports
         const matches = airportsData.filter((airport) =>
-            airport.name.toLowerCase().includes(searchText.toLowerCase())
+            airport.name.toLowerCase().includes(searchText.toLowerCase()) ||
+            airport.code.toLowerCase().includes(searchText.toLowerCase())
         );
         setFilteredDepartureAirports(matches);
     };
@@ -53,8 +55,10 @@ function FlightSearchForm() {
         setArrivalAirport(searchText);
 
         // Filter matching arrival airports
-        const matches = airportsData.filter((airport) =>
-            airport.name.toLowerCase().includes(searchText.toLowerCase())
+        const matches = airportsData.filter(
+            (airport) =>
+                airport.name.toLowerCase().includes(searchText.toLowerCase()) ||
+                airport.code.toLowerCase().includes(searchText.toLowerCase())
         );
         setFilteredArrivalAirports(matches);
     };
@@ -69,17 +73,25 @@ function FlightSearchForm() {
         setFilteredArrivalAirports([]);
     };
 
+    const handleOneWayChange = () => {
+        setOneWay(!oneWay);
+        // Eğer oneWay seçiliyse arrivalDate'i sıfırla
+        if (!oneWay) {
+            setArrivalDate(null);
+        }
+    };
+
     return (
-        <div className="p-8 bg-white rounded shadow-md max-w-4xl w-full relative">
+        <div className="p-8 bg-white rounded shadow-md relative">
             <h2 className="text-xl text-gray-700 font-semibold mb-4">Flight Search</h2>
-            <div className="grid grid-cols-2 gap-4 mt-8">
-                <div ref = {departureInputRef} >
+            <div className="grid md:grid-cols-2 gap-4 mt-8">
+                <div className="z-10 relative" ref = {departureInputRef} >
                     <label className="block text-sm font-medium text-gray-700 mb-2">Departure Airport</label>
                     <input
                         type="text"
                         value={departureAirport}
                         onChange={handleDepartureAirportChange}
-                        className="border z-10 border-gray-300 px-3 py-2 w-full rounded focus:outline-none focus:border-cyan-400"
+                        className="border border-gray-300 px-3 py-2 w-full rounded focus:outline-none focus:border-cyan-400"
                         placeholder="Search Departure Airport"
                     />
                     <div className="mt-2 max-h-40 overflow-y-auto absolute shadow-lg bg-white border border-gray-300 rounded">
@@ -89,12 +101,12 @@ function FlightSearchForm() {
                                 className="px-3 py-2 cursor-pointer hover:bg-gray-100"
                                 onClick={() => handleDepartureAirportSelect(airport)}
                             >
-                                {`${airport.name} - ${airport.city}`}
+                                {`${airport.name} - ${airport.city} - ${airport.code}`}
                             </div>
                         ))}
                     </div>
                 </div>
-                <div ref={arrivalInputRef} >
+                <div className="z-10 relative" ref={arrivalInputRef} >
                     <label className="block text-sm font-medium text-gray-700 mb-2">Arrival Airport</label>
                     <input
                         type="text"
@@ -110,37 +122,47 @@ function FlightSearchForm() {
                                 className="px-3 py-2 cursor-pointer hover:bg-gray-100"
                                 onClick={() => handleArrivalAirportSelect(airport)}
                             >
-                                {`${airport.name} - ${airport.city}`}
+                                {`${airport.name} - ${airport.city} - ${airport.code}`}
                             </div>
                         ))}
                     </div>
                 </div>
             </div>
-            <div className="grid grid-cols-2  mt-4 ">
+            <div className="grid md:grid-cols-2 mt-4 gap-4">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Departure Date</label>
-                    <DatePicker
-                        selected={departureDate}
-                        onChange={(date) => setDepartureDate(date)}
-                        minDate={new Date()} // Prevent selecting past dates
-                        dateFormat="dd/MM/yyyy"
-                        className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-cyan-400"
-                    />
+                    <div className="md:z-10">
+                        <DatePicker
+                            selected={departureDate}
+                            onChange={(date) => setDepartureDate(date)}
+                            minDate={new Date()} // Prevent selecting past dates
+                            dateFormat="dd/MM/yyyy"
+                            className="border relative border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-cyan-400"
+                        />
+                    </div>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Return Date</label>
-                    <DatePicker
-                        selected={returnDate}
-                        onChange={(date) => setReturnDate(date)}
-                        minDate={departureDate} // Prevent selecting dates before departure date
-                        dateFormat="dd/MM/yyyy"
-                        className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-cyan-400"
-                    />
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Arrival Date</label>
+                    <div className="md:z-10">
+                        <DatePicker
+                            selected={arrivalDate}
+                            onChange={(date) => setArrivalDate(date)}
+                            disabled={oneWay}
+                            minDate={departureDate} // Prevent selecting dates before departure date
+                            dateFormat="dd/MM/yyyy"
+                            className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-cyan-400"
+                        />
+                    </div>
                 </div>
             </div>
             <div className="mt-6">
                 <label className="block text-sm font-medium text-gray-700">One Way</label>
-                <input type="checkbox" className="ml-1" />
+                <input 
+                    type="checkbox" 
+                    className="ml-1"
+                    checked={oneWay}
+                    onChange={handleOneWayChange}
+                />
             </div>
             <button className="bg-cyan-400 text-white px-4 py-2 rounded mt-4 hover:bg-cyan-500">Search Flights</button>
         </div>

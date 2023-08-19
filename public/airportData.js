@@ -6,6 +6,7 @@ export const airportsData = [
     { code: 'AMS', name: 'Amsterdam Airport Schiphol', city: 'Amsterdam' },
     { code: 'FCO', name: 'Leonardo da Vinci–Fiumicino Airport', city: 'Rome' },
     { code: 'MAD', name: 'Adolfo Suárez Madrid–Barajas Airport', city: 'Madrid' },
+    { code: 'SAW', name: 'Sabiha Gökçen International Airport', city: 'Istanbul' },
     { code: 'BCN', name: 'Barcelona–El Prat Airport', city: 'Barcelona' },
     { code: 'MUC', name: 'Munich Airport', city: 'Munich' },
     { code: 'DME', name: 'Domodedovo International Airport', city: 'Moscow' },

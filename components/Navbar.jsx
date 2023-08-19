@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import {Bars3BottomRightIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
+import Link from 'next/link';
 const Navbar = () => {
   let Links = [
     { name: "HOME", link: "/" },
@@ -11,12 +12,14 @@ const Navbar = () => {
   ];
   let [open, setOpen] = useState(false);
   return (
-    <nav className='shadow-md bg-white w-full fixed top-0 left-0'>
+    <nav className='shadow-md bg-white w-full fixed top-0 left-0 z-10'>
       <div className='md:flex items-center justify-between py-4 md:px-10 px-7'>
         {/* logo section */}
-        <div className='font-bold text-2xl cursor-pointer flex items-center gap-1'>
-          <Image src='/logo.jpg' width={100} height={100} />
-        </div>
+        <Link href='/'>
+          <div className='font-bold text-2xl cursor-pointer flex items-center gap-1'>
+            <Image src='/logo.jpg' width={100} height={100} />
+          </div>
+        </Link>
         {/* Menu icon */}
         <div onClick={() => setOpen(!open)} className='absolute text-blue-700 right-8 top-6 cursor-pointer md:hidden w-7 h-7'>
           {
